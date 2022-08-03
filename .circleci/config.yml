@@ -15,7 +15,7 @@ jobs:
             echo 'export TAG=release.<< pipeline.number >>' >> $BASH_ENV
             echo 'export ${REGISTRY_NAME}' >> $BASH_ENV
             echo 'export ${SERVER_NAME}' >> $BASH_ENV
-            ssh penta@devstable.eastus.cloudapp.azure.com  " az acr login --name $REGISTRY_NAME && sudo docker pull $SERVER_NAME/ma-plugin-identify:$TAG && sudo docker run -d --name ma-plugin-identify-test  -e GATEWAY_URL=http://devstable.eastus.cloudapp.azure.com:8080 -p 50:80 --restart always $SERVER_NAME/ma-plugin-identify:$TAG"
+            ssh penta@devstable.eastus.cloudapp.azure.com  " az acr login --name $REGISTRY_NAME && sudo docker pull $SERVER_NAME/ma-plugin-identify:$TAG && sudo docker run -d --name ma-plugin-identify-test   -p 50:80 --restart always $SERVER_NAME/ma-plugin-identify:$TAG"
             
   sonar:
     docker:
