@@ -1,0 +1,82 @@
+version: 2.1
+jobs:
+  azure-acr/build-and-push-image:
+    machine: true
+    steps:
+      - checkout
+  
+  deploy-staging:
+    machine: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: |
+            TAG=release.<< pipeline.number >>
+            echo 'export TAG=release.<< pipeline.number >>' >> $BASH_ENV
+            echo 'export ${REGISTRY_NAME}' >> $BASH_ENV
+            echo 'export ${SERVER_NAME}' >> $BASH_ENV
+            ssh penta@devstable.eastus.cloudapp.azure.com  "./ma-plugin-identify.sh && az acr login --name $REGISTRY_NAME && sudo docker pull $SERVER_NAME/ma-plugin-identify:$TAG && sudo docker run -d --name ma-plugin-identify  -e GATEWAY_URL=http://devstable.eastus.cloudapp.azure.com:8080 -p 1410:80 --restart always $SERVER_NAME/ma-plugin-identify:$TAG"
+            
+  sonar:
+    docker:
+      - image: 'circleci/node'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies and build project
+          command: npm install
+      - sonarcloud/scan
+orbs:
+  azure-acr: circleci/azure-acr@0.2.0
+  sonarcloud: sonarsource/sonarcloud@1.0.0
+executors:
+  docker_build:
+    machine:
+      docker_layer_caching: true
+workflows:
+  version: 2.1
+  ma-plugin-identify-staging:
+    jobs:
+      - sonar:
+          context: SES
+          filters:
+            branches:
+              only:
+                - dev 
+      - deploy-staging:
+          context: ACR
+          requires:
+            - azure-acr/staging
+          filters:
+            branches:
+              only:
+                - release/dev-stable     
+      - azure-acr/build-and-push-image:
+          name: azure-acr/staging
+          context: ACR
+          login-server-name: $SERVER_NAME
+          registry-name: $REGISTRY_NAME
+          dockerfile: Dockerfile
+          executor: docker_build
+          repo: ma-plugin-identify
+          tag: release.<< pipeline.number >>        
+          filters:
+            branches:
+              only:
+                - release/dev-stable  
+      - azure-acr/build-and-push-image:
+          name: azure-acr/prod
+          context: ACR
+          login-server-name: $SERVER_NAME
+          registry-name: $REGISTRY_NAME
+          dockerfile: Dockerfile
+          executor: docker_build
+          repo: ma-plugin-identify
+          tag: << pipeline.git.tag >>,latest
+          filters:
+            branches:
+              ignore: 
+                - /.*/
+            tags:
+              only: /^V[0-9]+(\.[0-9]+)*$/ 
+

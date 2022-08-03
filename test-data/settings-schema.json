@@ -1,0 +1,64 @@
+{
+    "definitions": {
+        "Layer": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "alias": { "type": "string" },
+                "layerName": { "type": "string" },
+                "tolerance": { "type": "integer" },
+                "geometryField": {
+					"$ref": "#/definitions/Field"
+                },
+                "nameField": {
+					"$ref": "#/definitions/Field"
+                },
+                "idField": {
+                    "$ref": "#/definitions/Field"
+                },
+                "fields": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Field"
+					}
+                },
+                "datasource": {
+                    "$ref": "#/definitions/Datasource"
+                }                
+            },
+            "required": ["id", "layerName", "idField", "nameField", "geometryField"]
+        },
+        "Field": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" },
+                "fieldName": { "type": "string" },
+                "dataType": {
+                    "type": "string",
+                    "enum": ["STRING", "DOUBLE", "GEOMETRY"]
+                },
+                "alias": { "type": "string" },
+                "isBasic": { "type": "boolean"}
+            },
+            "required": ["id", "fieldName", "dataType", "alias"]
+        },
+        "Datasource": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "integer" }
+            },
+            "required": ["id"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "tolerance": { "type": "integer" },
+        "layers": {
+            "title": "Layers",
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/Layer"
+			}
+        }
+    }
+}

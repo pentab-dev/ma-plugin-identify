@@ -1,0 +1,25 @@
+{
+    "map-container": [{
+            "pluginId": "ma-plugin-ol-map",
+            "components": [{
+                "id": "MapComponent",
+                "show": true
+            }]
+    }],
+    "menu-component-container": [],
+    "c3-container": [],
+    "c4-container": [],
+    "map-overlay": [],
+    "modal-container": [],
+    "side-bar": [],
+    "map-navigation": [],
+    "menu-trigger-container": [{
+        "pluginId": "ma-plugin-identify",
+            "components": [{
+                "id": "Identify",
+                "show": true
+            }]
+    }],
+    "search-trigger-container": [],
+    "other-trigger-container": []
+}

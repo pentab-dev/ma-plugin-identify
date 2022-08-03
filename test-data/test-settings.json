@@ -1,0 +1,59 @@
+{
+  "tolerance": 10,
+  "move": false,
+  "layers": [
+    {
+      "id": 2163,
+      "alias": "Layer 14",
+      "layerName": "mna:lyr14",
+      "tolerance": 10,
+      "geometryField": {
+        "id": "2162",
+        "fieldName": "geom",
+        "dataType": "GEOMETRY"
+      },
+      "nameField": {
+        "id": "2165",
+        "fieldName": "displayname3",
+        "dataType": "STRING",
+        "alias": "Display Name 3"
+      },
+      "idField": {
+        "id": "2161",
+        "fieldName": "id",
+        "dataType": "INT"
+      },
+      "datasource": {
+        "id": 1
+      },
+      "fields": [
+        {
+          "id": 2183,
+          "fieldName": "basicdata11",
+          "dataType": "STRING",
+          "alias": "Basic Data 11",
+          "displayType": "Basic"
+        },
+        {
+          "id": 2184,
+          "fieldName": "basicdata12",
+          "dataType": "STRING",
+          "alias": "Basic Data 12",
+          "displayType": "Basic"
+        },
+        {
+          "id": 2229,
+          "fieldName": "col45",
+          "dataType": "STRING",
+          "alias": "Column 45"
+        },
+        {
+          "id": 2230,
+          "fieldName": "col46",
+          "dataType": "STRING",
+          "alias": "Column 46"
+        }
+      ]
+    }
+  ]
+}
